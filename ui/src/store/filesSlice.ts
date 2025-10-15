@@ -37,9 +37,9 @@ const initialState: FilesState = {
 
 export const fetchFiles = createAsyncThunk(
   'files/fetchFiles',
-  async ({ page, limit }: { page: number; limit: number }, { rejectWithValue }) => {
+  async ({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy?: string; sortOrder?: string }, { rejectWithValue }) => {
     try {
-      const response = await FilesUploadApi.fetchFiles(page, limit);
+      const response = await FilesUploadApi.fetchFiles(page, limit, sortBy, sortOrder);
       return response;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch files');

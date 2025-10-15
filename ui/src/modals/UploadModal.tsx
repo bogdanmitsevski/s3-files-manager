@@ -57,7 +57,7 @@ const VisuallyHiddenInput = styled('input')({
 
 const UploadModal = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isUploadModalOpen, isLoading, error, page, limit } = useSelector(
+  const { isUploadModalOpen, isLoading, error, page, limit, sortBy, sortOrder } = useSelector(
     (state: RootState) => state.files
   );
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -105,7 +105,7 @@ const UploadModal = () => {
     try {
       await dispatch(uploadFiles(selectedFiles)).unwrap();
       setSelectedFiles([]);
-      dispatch(fetchFiles({ page, limit }));
+      dispatch(fetchFiles({ page, limit, sortBy, sortOrder }));
     } catch (error) {
       console.error('Upload failed:', error);
     }

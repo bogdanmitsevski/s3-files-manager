@@ -38,6 +38,18 @@ export class MediaController {
   @ApiOperation({ summary: 'Find All Media' })
   @ApiQuery({ name: 'page', type: Number, required: true })
   @ApiQuery({ name: 'limit', type: Number, required: true })
+  @ApiQuery({
+    name: 'sortBy',
+    type: String,
+    required: false,
+    enum: ['id', 'uploadedAt', 'fileName', 'extension', 'size'],
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    type: String,
+    required: false,
+    enum: ['ASC', 'DESC'],
+  })
   @ApiResponse({
     status: 200,
     description: 'Media list.',
@@ -46,9 +58,16 @@ export class MediaController {
   async findAllMedia(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('sortBy', new DefaultValuePipe('id')) sortBy?: string,
+    @Query('sortOrder', new DefaultValuePipe('DESC')) sortOrder?: string,
   ): Promise<FindAllMediaResponse> {
     try {
-      return this.mediaService.findAllMedia({ page, limit });
+      return this.mediaService.findAllMedia({
+        page,
+        limit,
+        sortBy: sortBy as any,
+        sortOrder: sortOrder as any,
+      });
     } catch (e) {
       throw new Error(e);
     }

@@ -12,18 +12,9 @@ const getDatabaseConfig = (): TypeOrmModuleOptions => {
   const database: string = attemptEnv('DB_DATABASE', Joi.string().required());
   const synchronize: boolean = attemptEnv(
     'DB_SYNCHRONIZE',
-    Joi.boolean()
-      .truthy('1', 'true', 'on')
-      .falsy('0', 'false', 'off')
-      .default(false),
+    Joi.boolean().required(),
   );
-  const logging: boolean = attemptEnv(
-    'DB_LOGGING',
-    Joi.boolean()
-      .truthy('1', 'true', 'on')
-      .falsy('0', 'false', 'off')
-      .default(false),
-  );
+  const logging: boolean = attemptEnv('DB_LOGGING', Joi.boolean().required());
 
   return {
     type: 'postgres',

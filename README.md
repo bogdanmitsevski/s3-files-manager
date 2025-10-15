@@ -15,6 +15,33 @@ files-storage/
 
 - Node.js (v14 or higher)
 - npm (v6 or higher)
+- PostgreSQL (v12 or higher)
+- AWS S3 bucket and credentials
+
+## Database Setup
+
+### 1. Install PostgreSQL
+
+Make sure PostgreSQL is installed and running on your system.
+
+### 2. Create Database
+
+Create a new PostgreSQL database:
+
+```bash
+# Login to PostgreSQL
+psql -U postgres
+
+# Create database
+CREATE DATABASE files_storage;
+
+# Exit psql
+\q
+```
+
+**Note:** Set `DB_SYNCHRONIZE=true` for development to automatically sync database schema. For production, use migrations and set it to `false`.
+
+**Note:** Set `DB_LOGGING=true` to enable SQL query logging in the console
 
 ## Installation
 

@@ -34,7 +34,7 @@ export class AmazonS3Service {
       Key: uniqueFileName,
       Body: buffer,
       ContentType: mimetype,
-      ContentDisposition: 'inline',
+      ContentDisposition: `attachment; filename="${originalname}"`,
       ACL: 'public-read',
     });
 

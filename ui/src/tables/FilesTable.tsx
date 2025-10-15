@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@store/store';
 import {
@@ -44,8 +44,8 @@ const FilesTable = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchFiles({ page, limit }));
-  }, [dispatch, page, limit]);
+    dispatch(fetchFiles({ page, limit, sortBy, sortOrder }));
+  }, [dispatch, page, limit, sortBy, sortOrder]);
 
   const handleDeleteClick = (id: number, fileName: string) => {
     setFileToDelete({ id, fileName });
@@ -61,7 +61,7 @@ const FilesTable = () => {
       if (files.length === 1 && page > 1) {
         dispatch(setPage(page - 1));
       } else {
-        dispatch(fetchFiles({ page, limit }));
+        dispatch(fetchFiles({ page, limit, sortBy, sortOrder }));
       }
       setDeleteModalOpen(false);
       setFileToDelete(null);
@@ -93,28 +93,6 @@ const FilesTable = () => {
     dispatch(setLimit(parseInt(event.target.value, 10)));
     dispatch(setPage(1));
   };
-
-  const sortedFiles = useMemo(() => {
-    const sorted = [...files].sort((a, b) => {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortOrder === SortOrder.ASC
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortOrder === SortOrder.ASC ? aValue - bValue : bValue - aValue;
-      }
-
-      return 0;
-    });
-
-    return sorted;
-  }, [files, sortBy, sortOrder]);
-
   
 
   if (isLoading && files.length === 0) {
@@ -133,6 +111,8 @@ const FilesTable = () => {
     { id: 'size', label: 'Size' },
   ];
 
+  const muiSortOrder = sortOrder.toLowerCase() as 'asc' | 'desc';
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer>
@@ -143,11 +123,11 @@ const FilesTable = () => {
                 <TableCell
                   key={headCell.id}
                   sx={{ fontWeight: 'bold' }}
-                  sortDirection={sortBy === headCell.id ? sortOrder : false}
+                  sortDirection={sortBy === headCell.id ? muiSortOrder : false}
                 >
                   <TableSortLabel
                     active={sortBy === headCell.id}
-                    direction={sortBy === headCell.id ? sortOrder : SortOrder.ASC}
+                    direction={sortBy === headCell.id ? muiSortOrder : 'asc'}
                     onClick={() => handleSort(headCell.id)}
                   >
                     {headCell.label}
@@ -163,7 +143,7 @@ const FilesTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedFiles.length === 0 ? (
+            {files.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 8 }}>
                   <Typography variant="body1" color="text.secondary">
@@ -172,7 +152,7 @@ const FilesTable = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              sortedFiles.map((file) => (
+              files.map((file) => (
                 <TableRow key={file.id} hover>
                   <TableCell>{file.id}</TableCell>
                   <TableCell>

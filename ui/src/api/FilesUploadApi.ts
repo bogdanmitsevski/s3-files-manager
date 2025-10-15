@@ -1,4 +1,4 @@
-import { config } from '../config/env.config';
+import { config } from '@config/env.config';
 
 export interface UploadResult {
   originalName: string;
@@ -149,21 +149,31 @@ export class FilesUploadApi {
   }
 
   /**
-   * Fetch files from the server with pagination
+   * Fetch files from the server with pagination and sorting
    * 
    * @param page - Page number (starts from 1)
    * @param limit - Number of items per page
+   * @param sortBy - Field to sort by (optional, defaults to 'id')
+   * @param sortOrder - Sort order (optional, defaults to 'DESC')
    * @returns Promise with paginated files response
    */
-  static async fetchFiles(page: number = 1, limit: number = 10): Promise<FetchFilesResponse> {
+  static async fetchFiles(
+    page: number = 1, 
+    limit: number = 10,
+    sortBy: string = 'id',
+    sortOrder: string = 'DESC'
+  ): Promise<FetchFilesResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/media?page=${page}&limit=${limit}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/media?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`, 
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        }
+      );
 
       if (!response.ok) {
         const error: UploadError = await response.json();
@@ -209,7 +219,7 @@ export class FilesUploadApi {
   }
 
   /**
-   * Download a file by opening it in a new tab
+   * Download a file
    * 
    * @param url - File URL to download
    * @param fileName - Original file name
@@ -218,7 +228,6 @@ export class FilesUploadApi {
     const link = document.createElement('a');
     link.href = url;
     link.download = fileName;
-    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

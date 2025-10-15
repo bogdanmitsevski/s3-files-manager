@@ -23,12 +23,12 @@ export class MediaService {
   async findAllMedia(
     params: FindAllMediaParams,
   ): Promise<FindAllMediaResponse> {
-    const { page, limit } = params;
+    const { page, limit, sortBy = 'id', sortOrder = 'DESC' } = params;
     const [media, total] = await this.mediaRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
       order: {
-        uploadedAt: 'DESC',
+        [sortBy]: sortOrder,
       },
     });
 
