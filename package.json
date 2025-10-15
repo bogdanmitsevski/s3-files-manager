@@ -1,0 +1,31 @@
+{
+  "name": "files-storage-monorepo",
+  "version": "1.0.0",
+  "description": "Files storage application with API and UI",
+  "private": true,
+  "scripts": {
+    "api:install": "cd api && npm install",
+    "api:start": "cd api && npm run start",
+    "api:dev": "cd api && npm run start:dev",
+    "api:build": "cd api && npm run build",
+    "ui:install": "cd ui && npm install",
+    "ui:start": "cd ui && npm start",
+    "ui:dev": "cd ui && npm run dev",
+    "ui:build": "cd ui && npm run build",
+    "install:all": "npm run api:install && npm run ui:install",
+    "dev": "(npm run api:dev) & npm run ui:dev",
+    "build:all": "(npm run api:build) & npm run ui:build",
+    "start:all": "(npm run api:start) & npm run ui:start"
+  },
+  "keywords": [
+    "nestjs",
+    "files-storage",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+

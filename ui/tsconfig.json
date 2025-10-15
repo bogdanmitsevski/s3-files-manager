@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": "./",
+    "paths": {
+            "@components/*": ["./src/components/*"],
+            "@config/*": ["./src/config/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@utils": ["./src/utils/index"],
+            "@store/*": ["./src/store/*"],
+            "@constants/*": ["./src/constants/*"],
+            "@interfaces/*": ["./src/interfaces/*"],
+            "@api/*": ["./src/api/*"],
+            "@modals/*": ["./src/modals/*"],
+            "@tables/*": ["./src/tables/*"],
+        },
+  }
+}
